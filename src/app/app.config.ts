@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -11,6 +12,7 @@ import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideHttpClient } from '@angular/common/http';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,12 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideClientHydration(withEventReplay()),
     provideFirebaseApp(() => initializeApp({
-      projectId: "todo-list-playground-ultimate",
-      appId: "1:818052823143:web:3793005a444f1f2ae43cc2",
-      storageBucket: "todo-list-playground-ultimate.firebasestorage.app",
-      apiKey: "AIzaSyBcHiaEyIyz5NDFnh0vZyl4bA2rII4Ka2k",
-      authDomain: "todo-list-playground-ultimate.firebaseapp.com",
-      messagingSenderId: "818052823143"
+      ...environment.firebaseConfig
     })),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
@@ -33,6 +30,10 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideMessaging(() => getMessaging()),
     providePerformance(() => getPerformance()), 
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    { 
+      provide: FIREBASE_OPTIONS, 
+      useValue: environment.firebaseConfig, 
+    },
   ],
 };

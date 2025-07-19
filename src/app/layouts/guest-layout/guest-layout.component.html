@@ -1,1 +1,14 @@
-<p>guest-layout works!</p>
+@if (loading()) {
+    <app-fullscreen-spinner></app-fullscreen-spinner>
+}
+
+<app-header></app-header>
+
+<main class="container mx-auto px-4 py-8 flex flex-col items-center min-h-[60vh]">
+    <!-- Place login or registration form here -->
+    <div class="w-full max-w-md bg-white rounded shadow p-6">
+        <router-outlet></router-outlet>
+    </div>
+</main>
+
+<app-footer></app-footer>
