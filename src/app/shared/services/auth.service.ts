@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+
+export type User = firebase.User;
+export type MaybeUser = User | null;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Returns an observable of the user state
-  user$: Observable<firebase.User | null>;
+  private user$: Observable<MaybeUser>;
 
   constructor(private afAuth: AngularFireAuth, private http: HttpClient) {
     this.user$ = this.afAuth.authState;
@@ -21,7 +23,12 @@ export class AuthService {
 
   // Checks if user is authenticated
   isAuthenticated(): Observable<boolean> {
-    return this.user$.pipe(map(user => !!user));
+    return this.user$.pipe(
+      tap(user => {
+        console.info('User authentication status:', user);
+      }),
+      map(user => !!user)
+    );
   }
 
   // Sign in with email and password
@@ -30,13 +37,17 @@ export class AuthService {
   }
 
   // Sign out
-  logout(): Promise<void> {
-    return this.afAuth.signOut();
+  async logout(): Promise<void> {
+    return await this.afAuth.signOut();
   }
 
   // Get current user as a promise
-  getCurrentUser(): Promise<firebase.User | null> {
+  getCurrentUser(): Promise<MaybeUser> {
     return this.afAuth.currentUser;
+  }
+
+  getUserObservable(): Observable<MaybeUser> {
+    return this.user$;
   }
 
   // isAuthenticated(): Observable<boolean> {
@@ -50,3 +61,4 @@ export class AuthService {
   //   });
   // }
 }
+
