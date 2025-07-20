@@ -1,9 +1,13 @@
 @if (loading()) {
-    <app-fullscreen-spinner></app-fullscreen-spinner>
+<app-fullscreen-spinner></app-fullscreen-spinner>
 }
 
-<div class="user-layout">
-    <app-header></app-header>
+<div class="layout user-layout">
+  <app-header></app-header>
+  
+  <main class="container mx-auto px-4 py-8 flex flex-col items-center min-h-[80vh]">
     <router-outlet></router-outlet>
-    <app-footer></app-footer>
+  </main>
+
+  <app-footer></app-footer>
 </div>

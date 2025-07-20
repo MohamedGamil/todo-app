@@ -10,6 +10,16 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'todos',
+        component: GuestLayoutComponent,
+        children: [
+            {
+                path: '',
+                loadChildren: () => import('./pages/todos/todos.module').then(m => m.TodosModule)
+            },
+        ],
+    },
+    {
         path: 'home',
         component: UserLayoutComponent,
         children: [

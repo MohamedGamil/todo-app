@@ -12,6 +12,7 @@ import { FullscreenSpinnerComponent } from '../../common/fullscreen-spinner/full
   styleUrl: './guest-layout.component.scss'
 })
 export class GuestLayoutComponent implements OnInit {
+  excludedPaths = ['/todos'];
   loading = signal<boolean>(true);
 
   constructor(
@@ -28,12 +29,16 @@ export class GuestLayoutComponent implements OnInit {
     // await this.authService.logout();
 
     this.authService.isAuthenticated().subscribe(isAuthenticated => {
+      this.loading.set(false);
+
       if (isAuthenticated) {
+        if (this.excludedPaths.includes(this.router.url)) {
+          return;
+        }
+
         console.info('User is already logged in, redirecting to dashboard...');
         this.router.navigate(['/home/dashboard']);
       }
-
-      this.loading.set(false);
     });
   }
 }

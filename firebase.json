@@ -23,7 +23,7 @@
   ],
   "apphosting": {
     "backendId": "todo-app-ultimate",
-    "rootDir": "/",
+    "rootDir": "dist/todo-app/browser",
     "ignore": [
       "node_modules",
       ".git",
