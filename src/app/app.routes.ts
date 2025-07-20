@@ -11,7 +11,7 @@ export const routes: Routes = [
     },
     {
         path: 'todos',
-        component: GuestLayoutComponent,
+        component: UserLayoutComponent,
         children: [
             {
                 path: '',

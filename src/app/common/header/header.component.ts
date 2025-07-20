@@ -8,6 +8,7 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+  isReady = signal(false);
   isAuthenticated = signal(false);
 
   constructor(
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isAuthenticated().subscribe(isAuth => {
       this.isAuthenticated.set(isAuth);
+      this.isReady.set(true);
     });
   }
 

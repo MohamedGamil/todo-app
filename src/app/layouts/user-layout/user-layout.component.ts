@@ -12,7 +12,8 @@ import { FullscreenSpinnerComponent } from '../../common/fullscreen-spinner/full
   styleUrl: './user-layout.component.scss'
 })
 export class UserLayoutComponent implements OnInit {
-  loading = signal<boolean>(true);
+  excludedPaths = ['/todos'];
+  loading = signal<boolean>(false);
 
   constructor(
     private router: Router,
@@ -22,11 +23,16 @@ export class UserLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.excludedPaths.includes(this.router.url)) {
+      return;
+    }
+
     console.info('Checking for existing user session...');
     this.loading.set(true);
 
     this.authService.isAuthenticated().subscribe(isAuthenticated => {
       if (!isAuthenticated) {
+
         console.info('User is not logged in, redirecting to login...');
         this.router.navigate(['/auth/login']);
       }
